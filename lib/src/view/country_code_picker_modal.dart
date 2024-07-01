@@ -249,35 +249,47 @@ class _CountryCodePickerModalState extends State<CountryCodePickerModal> {
               ),
               pinned: true,
             ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                final code = availableCountryCodes[index];
-                final name =
-                    widget.localize ? code.localize(context).name : code.name;
+          if (availableCountryCodes.isEmpty)
+            SliverToBoxAdapter(
+              child: Container(
+                padding: const EdgeInsets.all(20),
+                alignment: Alignment.center,
+                child: Text(
+                  'No results',
+                  style: widget.countryTextStyle,
+                ),
+              ),
+            )
+          else
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  final code = availableCountryCodes[index];
+                  final name =
+                      widget.localize ? code.localize(context).name : code.name;
 
-                final textTheme = Theme.of(context).textTheme;
-                return ListTile(
-                  onTap: () => Navigator.pop(context, code),
-                  leading: CircleFlag(code.code, size: 40),
-                  horizontalTitleGap: widget.horizontalTitleGap,
-                  title: Text(
-                    name,
-                    style: widget.countryTextStyle ?? textTheme.labelLarge,
-                  ),
-                  subtitle: CcpDefaultListItemTrailing(
-                    code: code,
-                    icon: widget.favoritesIcon,
-                    favorites: widget.favorites,
-                    showDialCode: widget.showDialCode,
-                    dialCodeTextStyle:
-                        widget.dialCodeTextStyle ?? textTheme.labelLarge,
-                  ),
-                );
-              },
-              childCount: availableCountryCodes.length,
+                  final textTheme = Theme.of(context).textTheme;
+                  return ListTile(
+                    onTap: () => Navigator.pop(context, code),
+                    leading: CircleFlag(code.code, size: 40),
+                    horizontalTitleGap: widget.horizontalTitleGap,
+                    title: Text(
+                      name,
+                      style: widget.countryTextStyle ?? textTheme.labelLarge,
+                    ),
+                    subtitle: CcpDefaultListItemTrailing(
+                      code: code,
+                      icon: widget.favoritesIcon,
+                      favorites: widget.favorites,
+                      showDialCode: widget.showDialCode,
+                      dialCodeTextStyle:
+                          widget.dialCodeTextStyle ?? textTheme.labelLarge,
+                    ),
+                  );
+                },
+                childCount: availableCountryCodes.length,
+              ),
             ),
-          ),
         ],
       ),
     );
