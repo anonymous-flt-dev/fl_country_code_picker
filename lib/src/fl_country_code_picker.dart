@@ -31,6 +31,8 @@ class FlCountryCodePicker {
     this.countryTextStyle,
     this.dialCodeTextStyle,
     this.searchBarTextStyle,
+    this.shouldUseModifiedUI = true,
+    this.noResults,
   });
 
   /// {@template favorites_icon}
@@ -145,6 +147,12 @@ class FlCountryCodePicker {
   /// {@endtemplate}
   final List<String> filteredCountries;
 
+  /// Defaults to true. Uses the modified UI with slivers and circular flags
+  final bool shouldUseModifiedUI;
+
+  /// display any widget if no countries were found on search
+  final Widget? noResults;
+
   /// Adds all favorites to the list.
   void addFavorites(List<String> countries) => favorites.addAll(countries);
 
@@ -227,6 +235,8 @@ class FlCountryCodePicker {
         countryTextStyle: countryTextStyle,
         dialCodeTextStyle: dialCodeTextStyle,
         searchBarTextStyle: searchBarTextStyle,
+        noResults: noResults,
+        shouldUseModifiedUI: shouldUseModifiedUI,
       ),
     );
 
