@@ -35,6 +35,9 @@ class CountryCodePickerModal extends StatefulWidget {
     this.searchBarTextStyle,
     this.shouldUseModifiedUI = true,
     this.noResults,
+    this.searchBarPadding,
+    this.controller,
+    this.contentPadding,
     super.key,
   });
 
@@ -98,6 +101,15 @@ class CountryCodePickerModal extends StatefulWidget {
   /// display any widget if no countries were found on search
   final Widget? noResults;
 
+  /// Padding used for the default search bar
+  final EdgeInsetsGeometry? searchBarPadding;
+
+  /// Text controller used by the search bar
+  final TextEditingController? controller;
+
+  /// Padding used for the country list items
+  final EdgeInsetsGeometry? contentPadding;
+
   @override
   State<CountryCodePickerModal> createState() => _CountryCodePickerModalState();
 }
@@ -105,6 +117,7 @@ class CountryCodePickerModal extends StatefulWidget {
 class _CountryCodePickerModalState extends State<CountryCodePickerModal> {
   late final List<CountryCode> baseList;
   final availableCountryCodes = <CountryCode>[];
+  final _scrollController = ScrollController();
   late ItemScrollController itemScrollController;
 
   @override
@@ -305,6 +318,8 @@ class _CountryCodePickerModalState extends State<CountryCodePickerModal> {
               widget.title ?? const CcpDefaultModalTitle(),
               if (widget.showSearchBar)
                 CcpSearchBar(
+                  controller: widget.controller,
+                  padding: widget.searchBarPadding,
                   decoration: widget.searchBarDecoration,
                   style: widget.searchBarTextStyle,
                   onChanged: (query) {
@@ -334,10 +349,11 @@ class _CountryCodePickerModalState extends State<CountryCodePickerModal> {
                   },
                 ),
               Expanded(
-                child:
-                    (availableCountryCodes.isEmpty && widget.noResults != null)
-                        ? widget.noResults!
-                        : ScrollablePositionedList.builder(
+                child: (availableCountryCodes.isEmpty &&
+                        widget.noResults != null)
+                    ? widget.noResults!
+                    : widget.focusedCountry != null
+                        ? ScrollablePositionedList.builder(
                             itemScrollController: itemScrollController,
                             itemCount: availableCountryCodes.length,
                             itemBuilder: (context, index) {
@@ -349,6 +365,7 @@ class _CountryCodePickerModalState extends State<CountryCodePickerModal> {
                               final textTheme = Theme.of(context).textTheme;
 
                               return ListTile(
+                                contentPadding: widget.contentPadding,
                                 onTap: () => Navigator.pop(context, code),
                                 leading: code.flagImage(),
                                 horizontalTitleGap: widget.horizontalTitleGap,
@@ -367,6 +384,44 @@ class _CountryCodePickerModalState extends State<CountryCodePickerModal> {
                                 ),
                               );
                             },
+                          )
+                        : Scrollbar(
+                            controller: _scrollController,
+                            thumbVisibility: true,
+                            trackVisibility: true,
+                            child: ListView.builder(
+                              controller: _scrollController,
+                              itemCount: availableCountryCodes.length,
+                              itemBuilder: (context, index) {
+                                final code = availableCountryCodes[index];
+                                final name = widget.localize
+                                    ? code.localize(context).name
+                                    : code.name;
+
+                                final textTheme = Theme.of(context).textTheme;
+
+                                return ListTile(
+                                  contentPadding: widget.contentPadding,
+                                  onTap: () => Navigator.pop(context, code),
+                                  leading: code.flagImage(),
+                                  horizontalTitleGap: widget.horizontalTitleGap,
+                                  title: Text(
+                                    name,
+                                    style: widget.countryTextStyle ??
+                                        textTheme.labelLarge,
+                                  ),
+                                  trailing: CcpDefaultListItemTrailing(
+                                    code: code,
+                                    icon: widget.favoritesIcon,
+                                    favorites: widget.favorites,
+                                    showDialCode: widget.showDialCode,
+                                    dialCodeTextStyle:
+                                        widget.dialCodeTextStyle ??
+                                            textTheme.labelLarge,
+                                  ),
+                                );
+                              },
+                            ),
                           ),
               ),
             ],

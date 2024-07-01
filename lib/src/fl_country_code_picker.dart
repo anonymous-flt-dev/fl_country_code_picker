@@ -33,6 +33,9 @@ class FlCountryCodePicker {
     this.searchBarTextStyle,
     this.shouldUseModifiedUI = true,
     this.noResults,
+    this.controller,
+    this.searchBarPadding,
+    this.contentPadding,
   });
 
   /// {@template favorites_icon}
@@ -153,6 +156,15 @@ class FlCountryCodePicker {
   /// display any widget if no countries were found on search
   final Widget? noResults;
 
+  /// Text controller used by the search bar
+  final TextEditingController? controller;
+
+  /// Padding used for the default search bar
+  final EdgeInsetsGeometry? searchBarPadding;
+
+  /// Padding used for the country list items
+  final EdgeInsetsGeometry? contentPadding;
+
   /// Adds all favorites to the list.
   void addFavorites(List<String> countries) => favorites.addAll(countries);
 
@@ -237,6 +249,9 @@ class FlCountryCodePicker {
         searchBarTextStyle: searchBarTextStyle,
         noResults: noResults,
         shouldUseModifiedUI: shouldUseModifiedUI,
+        controller: controller,
+        searchBarPadding: searchBarPadding,
+        contentPadding: contentPadding,
       ),
     );
 

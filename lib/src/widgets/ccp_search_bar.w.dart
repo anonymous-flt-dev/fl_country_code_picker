@@ -11,6 +11,8 @@ class CcpSearchBar extends StatelessWidget {
     this.onChanged,
     this.decoration,
     this.style,
+    this.padding,
+    this.controller,
     super.key,
   });
 
@@ -23,11 +25,22 @@ class CcpSearchBar extends StatelessWidget {
   /// {@macro search_bar_text_style}
   final TextStyle? style;
 
+  /// Padding around the search bar
+  final EdgeInsetsGeometry? padding;
+
+  /// Controller for input text
+  final TextEditingController? controller;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: padding ??
+          const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 8,
+          ),
       child: TextField(
+        controller: controller,
         onChanged: onChanged,
         decoration: decoration ?? kInputDecoration,
         keyboardType: TextInputType.text,
