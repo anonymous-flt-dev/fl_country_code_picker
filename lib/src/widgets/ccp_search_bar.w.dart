@@ -68,7 +68,10 @@ class _CcpSearchBarState extends State<CcpSearchBar> {
               ? Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 24, 0),
                   child: GestureDetector(
-                    onTap: _searchBarTextController.clear,
+                    onTap: () {
+                      _searchBarTextController.clear();
+                      widget.onChanged?.call('');
+                    },
                     child: const Icon(
                       Icons.clear_rounded,
                       size: 32,
