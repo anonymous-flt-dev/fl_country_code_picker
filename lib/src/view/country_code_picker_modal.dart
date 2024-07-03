@@ -244,29 +244,37 @@ class _CountryCodePickerModalState extends State<CountryCodePickerModal> {
                           decoration: widget.searchBarDecoration,
                           style: widget.searchBarTextStyle,
                           onChanged: (query) {
-                            availableCountryCodes
-                              ..clear()
-                              ..addAll(
-                                List<CountryCode>.from(
-                                  baseList.where(
-                                    (c) {
-                                      final country = widget.localize
-                                          ? c.localize(context)
-                                          : c;
+                            if (query.isEmpty) {
+                              availableCountryCodes
+                                ..clear()
+                                ..addAll(List<CountryCode>.from(baseList));
+                            } else {
+                              availableCountryCodes
+                                ..clear()
+                                ..addAll(
+                                  List<CountryCode>.from(
+                                    baseList.where(
+                                      (c) {
+                                        final country = widget.localize
+                                            ? c.localize(context)
+                                            : c;
 
-                                      return country.code
-                                              .toLowerCase()
-                                              .contains(query.toLowerCase()) ||
-                                          country.dialCode
-                                              .toLowerCase()
-                                              .contains(query.toLowerCase()) ||
-                                          country.name
-                                              .toLowerCase()
-                                              .contains(query.toLowerCase());
-                                    },
+                                        return country.code
+                                                .toLowerCase()
+                                                .contains(
+                                                    query.toLowerCase()) ||
+                                            country.dialCode
+                                                .toLowerCase()
+                                                .contains(
+                                                    query.toLowerCase()) ||
+                                            country.name
+                                                .toLowerCase()
+                                                .contains(query.toLowerCase());
+                                      },
+                                    ),
                                   ),
-                                ),
-                              );
+                                );
+                            }
                             setState(() {});
                           },
                         ),
@@ -300,6 +308,7 @@ class _CountryCodePickerModalState extends State<CountryCodePickerModal> {
                             code: code,
                             icon: widget.favoritesIcon,
                             favorites: widget.favorites,
+                            showFavoritesIcon: widget.showFavoritesIcon,
                             showDialCode: widget.showDialCode,
                             dialCodeTextStyle: widget.dialCodeTextStyle ??
                                 textTheme.labelLarge,
