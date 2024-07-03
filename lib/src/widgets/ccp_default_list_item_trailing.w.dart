@@ -12,6 +12,7 @@ class CcpDefaultListItemTrailing extends StatelessWidget {
     required this.favorites,
     required this.showDialCode,
     this.dialCodeTextStyle,
+    this.showFavoritesIcon = true,
     super.key,
   });
 
@@ -30,9 +31,12 @@ class CcpDefaultListItemTrailing extends StatelessWidget {
   /// {@macro dial_code_text_style}
   final TextStyle? dialCodeTextStyle;
 
+  /// Defaults to true. Flag to disable displaying of favorites icon if
+  final bool showFavoritesIcon;
+
   @override
   Widget build(BuildContext context) {
-    if (favorites.isNotEmpty) {
+    if (favorites.isNotEmpty && !showFavoritesIcon) {
       final index = favorites.indexWhere((f) => f == code.code);
       final iconWidth = MediaQuery.of(context).size.width * 0.2;
 

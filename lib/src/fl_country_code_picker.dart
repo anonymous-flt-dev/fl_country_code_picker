@@ -26,6 +26,7 @@ class FlCountryCodePicker {
     this.showDialCode = true,
     this.showSearchBar = true,
     this.favorites = const [],
+    this.showFavoritesIcon = true,
     this.filteredCountries = const [],
     this.favoritesIcon,
     this.countryTextStyle,
@@ -33,7 +34,6 @@ class FlCountryCodePicker {
     this.searchBarTextStyle,
     this.shouldUseModifiedUI = true,
     this.noResults,
-    this.controller,
     this.searchBarPadding,
     this.contentPadding,
   });
@@ -144,6 +144,10 @@ class FlCountryCodePicker {
   /// {@endtemplate}
   final List<String> favorites;
 
+  /// Flag to optionally display favorites icon if list of favorites is not
+  /// empty. Defaults to true
+  final bool showFavoritesIcon;
+
   /// {@template filtered_countries}
   /// Filters all of the [CountryCode]s available and only show the codes that
   /// are existing in this list.
@@ -155,9 +159,6 @@ class FlCountryCodePicker {
 
   /// display any widget if no countries were found on search
   final Widget? noResults;
-
-  /// Text controller used by the search bar
-  final TextEditingController? controller;
 
   /// Padding used for the default search bar
   final EdgeInsetsGeometry? searchBarPadding;
@@ -189,6 +190,8 @@ class FlCountryCodePicker {
     Color barrierColor = kBarrierColor,
     Clip? clipBehavior = Clip.hardEdge,
     Color backgroundColor = kBackgroundColor,
+    bool isDismissible = false,
+    bool enableDrag = true,
   }) async {
     final fullScreenHeight = MediaQuery.of(context).size.height;
     final allowance = MediaQuery.of(context).padding.top -
@@ -227,6 +230,8 @@ class FlCountryCodePicker {
       barrierColor: barrierColor,
       backgroundColor: backgroundColor,
       isScrollControlled: true,
+      enableDrag: enableDrag,
+      isDismissible: isDismissible,
       builder: (_) => CountryCodePickerModal(
         title: title,
         defaultAppbarBackgroundColor: defaultAppbarBackgroundColor,
@@ -239,6 +244,7 @@ class FlCountryCodePicker {
         favorites: favorites,
         showDialCode: showDialCode,
         favoritesIcon: favoritesIcon,
+        showFavoritesIcon: showFavoritesIcon,
         horizontalTitleGap: horizontalTitleGap,
         showSearchBar: showSearchBar,
         filteredCountries: filteredCountries,
@@ -249,7 +255,6 @@ class FlCountryCodePicker {
         searchBarTextStyle: searchBarTextStyle,
         noResults: noResults,
         shouldUseModifiedUI: shouldUseModifiedUI,
-        controller: controller,
         searchBarPadding: searchBarPadding,
         contentPadding: contentPadding,
       ),

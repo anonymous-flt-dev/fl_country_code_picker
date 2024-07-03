@@ -28,6 +28,7 @@ class CountryCodePickerModal extends StatefulWidget {
     this.focusedCountry,
     this.searchBarDecoration,
     this.favorites = const [],
+    this.showFavoritesIcon = true,
     this.filteredCountries = const [],
     this.countryTextStyle,
     this.dialCodeTextStyle,
@@ -36,7 +37,6 @@ class CountryCodePickerModal extends StatefulWidget {
     this.shouldUseModifiedUI = true,
     this.noResults,
     this.searchBarPadding,
-    this.controller,
     this.contentPadding,
     super.key,
   });
@@ -49,6 +49,10 @@ class CountryCodePickerModal extends StatefulWidget {
 
   /// {@macro favorite_icon}
   final Icon? favoritesIcon;
+
+  /// Flag to optionally display favorites icon if list of favorites is not
+  /// empty. Defaults to true
+  final bool showFavoritesIcon;
 
   /// {@macro show_search_bar}
   final bool showSearchBar;
@@ -103,9 +107,6 @@ class CountryCodePickerModal extends StatefulWidget {
 
   /// Padding used for the default search bar
   final EdgeInsetsGeometry? searchBarPadding;
-
-  /// Text controller used by the search bar
-  final TextEditingController? controller;
 
   /// Padding used for the country list items
   final EdgeInsetsGeometry? contentPadding;
@@ -318,7 +319,6 @@ class _CountryCodePickerModalState extends State<CountryCodePickerModal> {
               widget.title ?? const CcpDefaultModalTitle(),
               if (widget.showSearchBar)
                 CcpSearchBar(
-                  controller: widget.controller,
                   padding: widget.searchBarPadding,
                   decoration: widget.searchBarDecoration,
                   style: widget.searchBarTextStyle,
@@ -414,6 +414,7 @@ class _CountryCodePickerModalState extends State<CountryCodePickerModal> {
                                     code: code,
                                     icon: widget.favoritesIcon,
                                     favorites: widget.favorites,
+                                    showFavoritesIcon: widget.showFavoritesIcon,
                                     showDialCode: widget.showDialCode,
                                     dialCodeTextStyle:
                                         widget.dialCodeTextStyle ??

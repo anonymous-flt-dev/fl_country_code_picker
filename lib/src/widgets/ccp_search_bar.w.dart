@@ -5,14 +5,13 @@ import 'package:flutter/material.dart';
 /// The default modal search bar widget that can be customized by supplying
 /// the [decoration] parameter.
 /// {@endtemplate}
-class CcpSearchBar extends StatelessWidget {
+class CcpSearchBar extends StatefulWidget {
   /// {@macro search_bar}
   const CcpSearchBar({
     this.onChanged,
     this.decoration,
     this.style,
     this.padding,
-    this.controller,
     super.key,
   });
 
@@ -28,23 +27,59 @@ class CcpSearchBar extends StatelessWidget {
   /// Padding around the search bar
   final EdgeInsetsGeometry? padding;
 
-  /// Controller for input text
-  final TextEditingController? controller;
+  @override
+  State<CcpSearchBar> createState() => _CcpSearchBarState();
+}
+
+class _CcpSearchBarState extends State<CcpSearchBar> {
+  final _searchBarTextController = TextEditingController();
+  var _isClearTextBtnVisible = false;
+
+  @override
+  void initState() {
+    _searchBarTextController.addListener(() {
+      if (_searchBarTextController.text.isNotEmpty && !_isClearTextBtnVisible) {
+        setState(() {
+          _isClearTextBtnVisible = true;
+        });
+      } else if (_searchBarTextController.text.isEmpty &&
+          _isClearTextBtnVisible) {
+        setState(() {
+          _isClearTextBtnVisible = false;
+        });
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: padding ??
+      padding: widget.padding ??
           const EdgeInsets.symmetric(
             horizontal: 16,
             vertical: 8,
           ),
       child: TextField(
-        controller: controller,
-        onChanged: onChanged,
-        decoration: decoration ?? kInputDecoration,
+        controller: _searchBarTextController,
+        onChanged: widget.onChanged,
+        decoration: (widget.decoration ?? kInputDecoration).copyWith(
+          suffixIcon: _isClearTextBtnVisible
+              ? Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 24, 0),
+                  child: GestureDetector(
+                    onTap: _searchBarTextController.clear,
+                    child: const Icon(
+                      Icons.clear_rounded,
+                      size: 32,
+                      color: Colors.black,
+                    ),
+                  ),
+                )
+              : null,
+        ),
         keyboardType: TextInputType.text,
-        style: style,
+        style: widget.style,
       ),
     );
   }
