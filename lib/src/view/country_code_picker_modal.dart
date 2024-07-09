@@ -405,7 +405,8 @@ class _CountryCodePickerModalState extends State<CountryCodePickerModal> {
                             controller: _scrollController,
                             thumbVisibility: true,
                             trackVisibility: true,
-                            thickness: 8,
+                            thickness: 12,
+                            radius: const Radius.circular(4),
                             child: ListView.builder(
                               controller: _scrollController,
                               itemCount: availableCountryCodes.length,
