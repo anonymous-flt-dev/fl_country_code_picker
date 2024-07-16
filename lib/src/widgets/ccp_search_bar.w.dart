@@ -75,7 +75,7 @@ class _CcpSearchBarState extends State<CcpSearchBar> {
                     child: const Icon(
                       Icons.clear_rounded,
                       size: 32,
-                      color: Colors.black,
+                      color: Colors.grey,
                     ),
                   ),
                 )
