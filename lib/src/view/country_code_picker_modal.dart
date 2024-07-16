@@ -139,10 +139,13 @@ class _CountryCodePickerModalState extends State<CountryCodePickerModal> {
     final favoriteList = <CountryCode>[];
     if (widget.favorites.isNotEmpty) {
       if (widget.maintainFavoritesOrder) {
+        final favoriteCountries = availableCountryCodes.where(
+          (c) => widget.favorites.contains(c.code),
+        );
         for (var i = 0; i < widget.favorites.length; i++) {
-          favoriteList.add(
-            availableCountryCodes.firstWhere(
-              (c) => c.code.contains(widget.favorites[i]),
+          favoriteList.addAll(
+            favoriteCountries.where(
+              (c) => widget.favorites[i] == c.code,
             ),
           );
         }
