@@ -425,6 +425,7 @@ class _CountryCodePickerModalState extends State<CountryCodePickerModal> {
                             thumbVisibility: true,
                             trackVisibility: true,
                             thickness: 12,
+                            interactive: true,
                             radius: const Radius.circular(8),
                             child: ListView.builder(
                               controller: _scrollController,
