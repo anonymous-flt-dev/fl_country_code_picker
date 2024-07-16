@@ -33,6 +33,7 @@ class FlCountryCodePicker {
     this.dialCodeTextStyle,
     this.searchBarTextStyle,
     this.shouldUseModifiedUI = true,
+    this.maintainFavoritesOrder = false,
     this.noResults,
     this.searchBarPadding,
     this.contentPadding,
@@ -166,6 +167,10 @@ class FlCountryCodePicker {
   /// Padding used for the country list items
   final EdgeInsetsGeometry? contentPadding;
 
+  /// True if the order of the favorite countries should be maintained. Defaults
+  /// to adding favorites in alphabetical order.
+  final bool maintainFavoritesOrder;
+
   /// Adds all favorites to the list.
   void addFavorites(List<String> countries) => favorites.addAll(countries);
 
@@ -257,6 +262,7 @@ class FlCountryCodePicker {
         shouldUseModifiedUI: shouldUseModifiedUI,
         searchBarPadding: searchBarPadding,
         contentPadding: contentPadding,
+        maintainFavoritesOrder: maintainFavoritesOrder,
       ),
     );
 

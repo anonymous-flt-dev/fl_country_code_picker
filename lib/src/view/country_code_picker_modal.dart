@@ -35,6 +35,7 @@ class CountryCodePickerModal extends StatefulWidget {
     this.horizontalTitleGap,
     this.searchBarTextStyle,
     this.shouldUseModifiedUI = true,
+    this.maintainFavoritesOrder = false,
     this.noResults,
     this.searchBarPadding,
     this.contentPadding,
@@ -111,6 +112,10 @@ class CountryCodePickerModal extends StatefulWidget {
   /// Padding used for the country list items
   final EdgeInsetsGeometry? contentPadding;
 
+  /// True if the order of the favorite countries should be maintained. Defaults
+  /// to adding favorites in alphabetical order.
+  final bool maintainFavoritesOrder;
+
   @override
   State<CountryCodePickerModal> createState() => _CountryCodePickerModalState();
 }
@@ -131,10 +136,24 @@ class _CountryCodePickerModalState extends State<CountryCodePickerModal> {
   Future<void> _initCountries() async {
     final allCountryCodes = codes.map(CountryCode.fromMap).toList();
 
-    final favoriteList = <CountryCode>[
-      if (widget.favorites.isNotEmpty)
-        ...allCountryCodes.where((c) => widget.favorites.contains(c.code)),
-    ];
+    final favoriteList = <CountryCode>[];
+    if (widget.favorites.isNotEmpty) {
+      if (widget.maintainFavoritesOrder) {
+        for (var i = 0; i < widget.favorites.length; i++) {
+          favoriteList.add(
+            availableCountryCodes.firstWhere(
+              (c) => c.code.contains(widget.favorites[i]),
+            ),
+          );
+        }
+      } else {
+        favoriteList.addAll(
+          allCountryCodes.where(
+            (c) => widget.favorites.contains(c.code),
+          ),
+        );
+      }
+    }
 
     final filteredList = [
       ...widget.filteredCountries.isNotEmpty
