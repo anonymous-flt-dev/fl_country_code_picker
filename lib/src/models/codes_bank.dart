@@ -355,6 +355,11 @@ const List<Map<String, dynamic>> codes = [
     "national_significant_number": 8,
   },
   {
+    "name": "England",
+    "code": "GB-ENG",
+    "dial_code": "+44",
+  },
+  {
     "name": "Equatorial Guinea",
     "code": "GQ",
     "dial_code": "+240",
