@@ -123,7 +123,6 @@ class CountryCodePickerModal extends StatefulWidget {
 class _CountryCodePickerModalState extends State<CountryCodePickerModal> {
   late final List<CountryCode> baseList;
   final availableCountryCodes = <CountryCode>[];
-  final _scrollController = ScrollController();
   late ItemScrollController itemScrollController;
 
   @override
@@ -386,11 +385,10 @@ class _CountryCodePickerModalState extends State<CountryCodePickerModal> {
                   },
                 ),
               Expanded(
-                child: (availableCountryCodes.isEmpty &&
-                        widget.noResults != null)
-                    ? widget.noResults!
-                    : widget.focusedCountry != null
-                        ? ScrollablePositionedList.builder(
+                child:
+                    (availableCountryCodes.isEmpty && widget.noResults != null)
+                        ? widget.noResults!
+                        : ScrollablePositionedList.builder(
                             itemScrollController: itemScrollController,
                             itemCount: availableCountryCodes.length,
                             itemBuilder: (context, index) {
@@ -422,48 +420,6 @@ class _CountryCodePickerModalState extends State<CountryCodePickerModal> {
                                 ),
                               );
                             },
-                          )
-                        : Scrollbar(
-                            controller: _scrollController,
-                            thumbVisibility: true,
-                            trackVisibility: true,
-                            thickness: 12,
-                            interactive: true,
-                            radius: const Radius.circular(8),
-                            child: ListView.builder(
-                              controller: _scrollController,
-                              itemCount: availableCountryCodes.length,
-                              itemBuilder: (context, index) {
-                                final code = availableCountryCodes[index];
-                                final name = widget.localize
-                                    ? code.localize(context).name
-                                    : code.name;
-
-                                final textTheme = Theme.of(context).textTheme;
-
-                                return ListTile(
-                                  contentPadding: widget.contentPadding,
-                                  onTap: () => Navigator.pop(context, code),
-                                  leading: code.flagImage(),
-                                  horizontalTitleGap: widget.horizontalTitleGap,
-                                  title: Text(
-                                    name,
-                                    style: widget.countryTextStyle ??
-                                        textTheme.labelLarge,
-                                  ),
-                                  trailing: CcpDefaultListItemTrailing(
-                                    code: code,
-                                    icon: widget.favoritesIcon,
-                                    favorites: widget.favorites,
-                                    showFavoritesIcon: widget.showFavoritesIcon,
-                                    showDialCode: widget.showDialCode,
-                                    dialCodeTextStyle:
-                                        widget.dialCodeTextStyle ??
-                                            textTheme.labelLarge,
-                                  ),
-                                );
-                              },
-                            ),
                           ),
               ),
             ],
